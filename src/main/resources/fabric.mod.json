@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "id": "examplemod",
+  "id": "animationlib",
   "version": "${version}",
 
-  "name": "Example Mod",
+  "name": "AnimationLib",
   "description": "This mod aims to help new BTA modders.",
   "authors": [
-    "Turnip Labs"
+    "Big Sir"
   ],
   "contact": {
     "homepage": "",
@@ -19,20 +19,20 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-			"turniplabs.examplemod.ExampleMod"
+      "bigsir.animationlib.AnimationLib"
     ],
 		"beforeGameStart": [
-			"turniplabs.examplemod.ExampleMod"
+					"bigsir.animationlib.AnimationLib"
 		],
 		"afterGameStart": [
-			"turniplabs.examplemod.ExampleMod"
+					"bigsir.animationlib.AnimationLib"
 		],
 		"recipesReady": [
-			"turniplabs.examplemod.ExampleMod"
+					"bigsir.animationlib.AnimationLib"
 		]
 	},
   "mixins": [
-      "examplemod.mixins.json"
+      "animationlib.mixins.json"
   ],
 
   "depends": {
