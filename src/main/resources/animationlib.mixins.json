@@ -4,11 +4,11 @@
   "package": "bigsir.animationlib.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+  ],
+  "client": [
     "EntityLivingMixin",
     "LivingRendererMixin",
     "ModelBipedMixin"
-  ],
-  "client": [
   ],
   "injectors": {
     "defaultRequire": 1
