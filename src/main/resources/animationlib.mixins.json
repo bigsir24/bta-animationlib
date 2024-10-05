@@ -8,7 +8,8 @@
   "client": [
     "EntityLivingMixin",
     "LivingRendererMixin",
-    "ModelBipedMixin"
+    "ModelBipedMixin",
+    "PlayerRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
