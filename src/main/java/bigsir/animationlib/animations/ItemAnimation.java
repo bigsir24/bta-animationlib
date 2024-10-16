@@ -1,5 +1,7 @@
 package bigsir.animationlib.animations;
 
+import bigsir.animationlib.interfaces.IAnimations;
+import bigsir.animationlib.utils.AnimationValueStorage;
 import net.minecraft.client.render.model.ModelBiped;
 import net.minecraft.core.entity.EntityLiving;
 import net.minecraft.core.item.Item;
@@ -21,19 +23,40 @@ public class ItemAnimation {
 	public static final ItemAnimation noAnimation = new ItemAnimation();
 	private static final Map<Item, ItemAnimation> itemAnimationMap = new HashMap<>();
 	private static final Map<Class<? extends ItemAnimation>, ItemAnimation> animationMap = new HashMap<>();
+	private static final Map<Class<? extends ItemAnimation>, String> fieldLinkMap = new HashMap<>();
+	protected AnimationValueStorage tempValueStorage;
+	protected EntityLiving attached;
 
 	/**
 	 * Used to get the entry point the animation will target. For entry point descriptions see {@link EntryPoint}
 	 * @return targeted entry point
 	 */
-	public EntryPoint getEntryPoint(){
-		return EntryPoint.BEFORE_SNEAK;
+	public AnimationEntryPoint getEntryPoint(){
+		return AnimationEntryPoint.BEFORE_SNEAK;
 	}
 
 	/**
 	 * Method that exposes ModelBiped and all needed parameters needed to change rotations.
 	 */
 	public void applyTransformation(EntityLiving entity, ModelBiped modelBiped, float limbSwing, float limbYaw, float limbPitch, float headYaw, float headPitch, float scale){
+	}
+
+	public boolean isAnimated(){
+		return false;
+	}
+
+	public void initValues(EntityLiving entity){
+	}
+
+	public void updateValues(EntityLiving entity){
+	}
+
+	public final void loadTempValues(AnimationValueStorage avs){
+		tempValueStorage = avs;
+	}
+
+	public final void clearTempValues(){
+		tempValueStorage = null;
 	}
 
 	/**
@@ -69,24 +92,43 @@ public class ItemAnimation {
 		}
 	}
 
-	/**
-	 * Entry points for the animation.
-	 * <li>{@link #BEFORE_SWING} - applies before swing transformation</li>
-	 * <li>{@link #BEFORE_SNEAK} - applies between swing and sneak transformations</li>
-	 * <li>{@link #AFTER_SNEAK} - applies after sneak transformation</li>
-	 */
-	public enum EntryPoint {
-		/**
-		 * Applies before swing transformation.
-		 */
-		BEFORE_SWING,
-		/**
-		 * Applies between swing and sneak transformations.
-		 */
-		BEFORE_SNEAK,
-		/**
-		 * Applies after sneak transformation.
-		 */
-		AFTER_SNEAK
+	public final void attachEntity(EntityLiving entity){
+		this.attached = entity;
+	}
+
+	public final void clearEntity(){
+		this.attached = null;
+	}
+
+	protected final void defineFloat(String key, float startValue) {
+		if(!isAnimated()) return;
+		tempValueStorage.setFloat(key, startValue, AnimationValueStorage.Type.ALL);
+	}
+
+	protected final void setFloat(String key, float f){
+		if(!isAnimated()) return;
+		tempValueStorage.setFloat(key, f, AnimationValueStorage.Type.CURRENT);
+	}
+
+	protected final float getFloat(String key){
+		if(!isAnimated()) return 0.0F;
+		return tempValueStorage.getFloat(key, AnimationValueStorage.Type.CURRENT);
+	}
+
+	protected final float getPartialFloat(String key){
+		if(!isAnimated()) return 0.0F;
+		return ((IAnimations)attached).bta_animationlib$getAVS().getFloat(key, AnimationValueStorage.Type.PARTIAL);
+	}
+
+	public static void linkField(String fieldName, Class<? extends ItemAnimation> animationClass){
+		fieldLinkMap.put(animationClass, fieldName);
+	}
+
+	protected final Object getFieldValue(String string) {
+		Object o = null;
+		try {
+			o = this.attached.getClass().getField(string).get(this.attached);
+		} catch (NoSuchFieldException | IllegalAccessException ignored){}
+		return o;
 	}
 }
