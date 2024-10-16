@@ -14,8 +14,10 @@ public class AnimationLib implements ModInitializer {
     @Override
     public void onInitialize() {
         LOGGER.info("AnimationLib initialized.");
+		/*
 		ItemAnimation.register(Item.toolBow, ItemAnimationBow.class);
 		ItemAnimation.register(Item.foodPorkchopRaw, ItemAnimationFood.class);
 		ItemAnimation.register(Item.foodPorkchopCooked, ItemAnimationFood.class);
+		 */
     }
 }
